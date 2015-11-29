@@ -53,6 +53,7 @@ public class CheatActivity extends AppCompatActivity {
                 }
 
                 mIsAnswerShown = true;
+                setAnswerShownResult(mIsAnswerShown);
             }
         });
 
