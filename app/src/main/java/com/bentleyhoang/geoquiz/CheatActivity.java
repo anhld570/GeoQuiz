@@ -13,10 +13,15 @@ public class CheatActivity extends AppCompatActivity {
     private static final String EXTRA_ANSWER_IS_TRUE = "com.bentleyhoang.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN = "com.bentleyhoang.geoquiz.answer_shown";
 
+    private static final String KEY_ANSWER = "answer";
+    private static final String KEY_ANSWER_SHOWN = "answer_shown";
+
     private boolean mAnswerIsTrue;
 
     private TextView mAnswerTextView;
     private Button mShowAnswer;
+
+    private boolean mIsAnswerShown;
 
     public static Intent newIntent(Context packageContext, boolean isAnswerTrue) {
         Intent i = new Intent(packageContext, CheatActivity.class);
@@ -47,9 +52,24 @@ public class CheatActivity extends AppCompatActivity {
                     mAnswerTextView.setText(R.string.false_button);
                 }
 
-                setAnswerShownResult(true);
+                mIsAnswerShown = true;
             }
         });
+
+        if (savedInstanceState != null) {
+            mAnswerTextView.setText(savedInstanceState.getCharSequence(KEY_ANSWER, ""));
+            mIsAnswerShown = savedInstanceState.getBoolean(KEY_ANSWER_SHOWN, false);
+        }
+
+        setAnswerShownResult(mIsAnswerShown);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putCharSequence(KEY_ANSWER, mAnswerTextView.getText());
+        outState.putBoolean(KEY_ANSWER_SHOWN, mIsAnswerShown);
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {
